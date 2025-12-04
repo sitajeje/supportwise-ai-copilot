@@ -1,13 +1,17 @@
 {
   "name": "supportwise-ai-copilot",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "import:tickets": "node scripts/importTickets.mjs",
+    "test:supabase": "node scripts/testSupabase.mjs",
+    "embed:tickets": "node scripts/generateTicketEmbeddings.mjs",
+    "embed:tickets:local": "node scripts/generateTicketEmbeddingsLocal.mjs"
   },
   "repository": {
     "type": "git",
@@ -18,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/sitajeje/supportwise-ai-copilot/issues"
   },
-  "homepage": "https://github.com/sitajeje/supportwise-ai-copilot#readme"
+  "homepage": "https://github.com/sitajeje/supportwise-ai-copilot#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.86.0",
+    "@xenova/transformers": "^2.17.2",
+    "dotenv": "^17.2.3",
+    "openai": "^6.9.1"
+  }
 }

@@ -1,1 +1,97 @@
-docs/*
+# ------------------------------------------------------
+# Node / JavaScript
+# ------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# dotenv files (DO NOT UPLOAD SECRETS)
+.env
+.env.*.local
+*.local
+
+# Lock files (optional but often ignored)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# ------------------------------------------------------
+# Build output
+# ------------------------------------------------------
+dist/
+build/
+out/
+.next/
+.expo/
+.expo-shared/
+expo-build/
+coverage/
+
+# React Native / Expo specific
+android/
+ios/
+*.keystore
+*.jks
+
+# Expo assets build cache
+.expo/
+
+# ------------------------------------------------------
+# Logs
+# ------------------------------------------------------
+logs/
+*.log
+*.log.*
+log.txt
+
+# PM2 logs
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ------------------------------------------------------
+# OS junk
+# ------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+
+# ------------------------------------------------------
+# IDE / Editor files
+# ------------------------------------------------------
+.vscode/
+.idea/
+*.iml
+
+# JetBrains / WebStorm
+/.idea
+*.iws
+*.ipr
+
+# ------------------------------------------------------
+# TypeScript
+# ------------------------------------------------------
+*.tsbuildinfo
+
+# ------------------------------------------------------
+# Temporary exports / backups
+# ------------------------------------------------------
+*.bak
+*.tmp
+tmp/
+temp/
+
+# ------------------------------------------------------
+# S3, database dumps, large exports (prevent accidents)
+# ------------------------------------------------------
+*.sql
+*.sqlite
+dump.sql
+exports/
+
+# ----------------------------
