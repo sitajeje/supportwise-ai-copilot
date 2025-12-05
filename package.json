@@ -32,5 +32,14 @@
     "openai": "^6.9.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
   }
 }
