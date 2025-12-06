@@ -22,7 +22,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-                href="/dashboard"
+                href="api/dashboard"
                 className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg shadow hover:bg-slate-300 transition"
             >
                 View Dashboard (Soon)
