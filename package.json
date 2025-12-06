@@ -11,7 +11,11 @@
     "import:tickets": "node scripts/importTickets.mjs",
     "test:supabase": "node scripts/testSupabase.mjs",
     "embed:tickets": "node scripts/generateTicketEmbeddings.mjs",
-    "embed:tickets:local": "node scripts/generateTicketEmbeddingsLocal.mjs"
+    "embed:tickets:local": "node scripts/generateTicketEmbeddingsLocal.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "repository": {
     "type": "git",
@@ -35,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",

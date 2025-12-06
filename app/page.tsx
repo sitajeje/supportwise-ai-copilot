@@ -39,7 +39,7 @@ export default function HomePage() {
                 language queries.
             </p>
             <Link
-                href="/search"
+                href="api/search"
                 className="inline-block mt-3 text-blue-600 text-sm"
             >
                 Try now →

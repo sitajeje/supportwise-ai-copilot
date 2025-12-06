@@ -68,7 +68,11 @@ export async function POST(req: Request) {
         // 1) Get local embedding for the query
         const embedder = await getEmbedder();
         const output = await embedder(query, { pooling: "mean", normalize: true });
-        const queryEmbedding: number[] = output.data;
+        const queryEmbedding: number[] = Array.from(output.data as Float32Array);
+        console.log(
+            "queryEmbedding sample:",
+            queryEmbedding.slice(0, 5)
+        );
 
         // 2) Call Supabase RPC to get similar tickets
         const { data: matches, error } = await supabase.rpc("match_tickets", {
