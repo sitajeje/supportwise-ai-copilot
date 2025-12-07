@@ -22,10 +22,10 @@ export default function HomePage() {
             </Link>
 
             <Link
-                href="api/dashboard"
+                href="/dashboard"
                 className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg shadow hover:bg-slate-300 transition"
             >
-                View Dashboard (Soon)
+                View Dashboard
             </Link>
             </div>
         </section>
@@ -39,7 +39,7 @@ export default function HomePage() {
                 language queries.
             </p>
             <Link
-                href="api/search"
+                href="/search"
                 className="inline-block mt-3 text-blue-600 text-sm"
             >
                 Try now →
@@ -55,7 +55,7 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h3 className="font-semibold text-lg mb-2">Dashboard (Coming Soon)</h3>
+            <h3 className="font-semibold text-lg mb-2">Dashboard</h3>
             <p className="text-sm text-slate-600">
                 Track ticket volume, SLA performance, categories, and customer
                 sentiment in real-time.

@@ -25,7 +25,7 @@ export default function RootLayout({
                     Semantic Search
                 </Link>
                 <Link href="/dashboard" className="hover:text-blue-600 transition">
-                    Dashboard (Soon)
+                    Dashboard
                 </Link>
                 <Link href="/chat" className="hover:text-blue-600 transition">
                     Chat (Soon)

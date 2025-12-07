@@ -32,7 +32,7 @@ export default function SearchPage() {
         setData(null);
 
         try {
-            const res = await fetch("/api/search/insights", {
+            const res = await fetch("../../api/search/insights", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
