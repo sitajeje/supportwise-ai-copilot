@@ -28,7 +28,7 @@ export default function RootLayout({
                     Dashboard
                 </Link>
                 <Link href="/chat" className="hover:text-blue-600 transition">
-                    Chat (Soon)
+                    Chat
                 </Link>
                 </div>
             </nav>
