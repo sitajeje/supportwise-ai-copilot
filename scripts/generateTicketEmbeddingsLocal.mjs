@@ -57,21 +57,21 @@ async function fetchTickets(limit = 200) {
 }
 
 /**
- * Generate a single embedding vector for a given text using the local model.
- * We take the first token's vector (CLS-like) as the sentence embedding.
+ * Generate a single sentence embedding vector for a given text using the local model.
+ * I use mean pooling over all token embeddings (with normalization) as the sentence embedding.
  */
 async function generateEmbeddingForText(text, embedder) {
-    // The model returns a tensor [sequence_length, hidden_size]
+    // The model will apply mean pooling over token embeddings and return a single sentence embedding.
     const output = await embedder(text, {
         pooling: "mean",
         normalize: true
     });
-    // output.data is a nested array: [seq_len, dim]
-    const tokenEmbeddings = output.data;
+    // output.data is now a 1D array: [dim], already pooled and normalized.
+    const sentenceEmbedding = output.data;
     //const firstToken = tokenEmbeddings[0]; // shape [dim=384]
 
     // Ensure it's a plain JS array of numbers
-    return Array.from(tokenEmbeddings);
+    return Array.from(sentenceEmbedding);
 }
 
 /**
@@ -132,7 +132,7 @@ async function main() {
     processed += slice.length;
     console.log(`Batch done. Processed total: ${processed}`);
 
-    // Small delay between batches (not strictly necessary for local model, but OK)
+    // Small delay between batches to avoid resource spikes and smooth out DB writes.
     await sleep(200);
     }
 
