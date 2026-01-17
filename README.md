@@ -50,7 +50,7 @@ LLM (Gemini) for reasoning
 ## AI & Vector Stack
 - Local MiniLM (Xenova) embeddings
 - pgvector similarity search
-- Gemini 1.5 Flash for insight generation and summary reasoning
+- Gemini 2.5 Flash for insight generation and summary reasoning
 
 ## Dashboard
 - ApexCharts interactive visualizations
