@@ -30,6 +30,8 @@ export default function RootLayout({
                 <Link href="/chat" className="hover:text-blue-600 transition">
                     Chat
                 </Link>
+                <Link href="/agent" className="hover:text-blue-600 transition">
+                AI Analyst</Link>
                 </div>
             </nav>
             </header>
