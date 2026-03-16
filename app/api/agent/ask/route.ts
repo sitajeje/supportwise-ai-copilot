@@ -101,6 +101,10 @@ export async function POST(req: Request) {
     return NextResponse.json({
       route: "agent",
       answer,
+      meta: {
+        model: "gemini-2.5-flash",
+        toolNames: getSupportWiseTools().map((toolDef) => toolDef.name),
+      },
     });
   } catch (error) {
     console.error("Error in /api/agent/ask:", error);
