@@ -1,3 +1,5 @@
+// lib/server/gemini.ts
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey =

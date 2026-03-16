@@ -1,7 +1,11 @@
+//lib/agent/tools.ts
+
 import { tool } from "langchain";
 import { z } from "zod";
 import { supabaseAdmin } from "../server/supabase";
 import { embedText } from "../server/embedder";
+import { groupIssuesWithLLM } from "./groupIssues";
+
 
 type TicketMatch = {
     ticket_id: string;
@@ -14,6 +18,11 @@ type DailyVolumeRow = {
     day: string;
     count: number;
 };
+
+const groupIssuesSchema = z.object({
+    query: z.string().describe("Issue theme to retrieve related tickets before grouping"),
+    limit: z.number().min(3).max(12).default(8),
+});
 
 export const searchTicketsTool = tool(
     async ({ query, limit }) => {
@@ -97,10 +106,55 @@ export const getStatusDistributionTool = tool(
     }
 );
 
+export const groupIssuesTool = tool(
+    async (input) => {
+        const { query, limit } = groupIssuesSchema.parse(input);
+
+        const queryEmbedding = await embedText(query);
+
+        const { data, error } = await supabaseAdmin.rpc("match_tickets", {
+        query_embedding: queryEmbedding,
+        match_count: limit,
+        });
+
+        if (error) {
+        throw new Error(`Issue grouping retrieval failed: ${error.message}`);
+        }
+
+        const matches = (data || []) as TicketMatch[];
+
+        const grouping = await groupIssuesWithLLM(
+        matches.map((ticket) => ({
+            ticket_id: ticket.ticket_id,
+            subject: ticket.subject,
+            description: ticket.description,
+        }))
+        );
+
+        return JSON.stringify({
+        query,
+        total: matches.length,
+        groups: grouping.groups,
+        sourceTickets: matches.map((ticket) => ({
+            ticket_id: ticket.ticket_id,
+            subject: ticket.subject,
+            similarity: ticket.similarity,
+        })),
+        });
+    },
+    {
+        name: "group_issues",
+        description:
+        "Retrieve related tickets and group them into semantic issue categories.",
+        schema: groupIssuesSchema,
+    }
+);
+
 export function getSupportWiseTools() {
     return [
         searchTicketsTool,
         getDailyVolumeTool,
         getStatusDistributionTool,
+        groupIssuesTool,
     ];
 }

@@ -1,3 +1,5 @@
+// lib/server/embedder.ts
+
 import { pipeline } from "@xenova/transformers";
 
 let embedderPromise: Promise<any> | null = null;
