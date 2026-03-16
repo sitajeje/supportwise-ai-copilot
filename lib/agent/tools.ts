@@ -24,6 +24,11 @@ const groupIssuesSchema = z.object({
     limit: z.number().min(3).max(12).default(8),
 });
 
+const detectTrendsSchema = z.object({
+    lastDays: z.number().min(6).max(60).default(14),
+});
+
+
 export const searchTicketsTool = tool(
     async ({ query, limit }) => {
         const queryEmbedding = await embedText(query);
@@ -113,33 +118,33 @@ export const groupIssuesTool = tool(
         const queryEmbedding = await embedText(query);
 
         const { data, error } = await supabaseAdmin.rpc("match_tickets", {
-        query_embedding: queryEmbedding,
-        match_count: limit,
+            query_embedding: queryEmbedding,
+            match_count: limit,
         });
 
         if (error) {
-        throw new Error(`Issue grouping retrieval failed: ${error.message}`);
+            throw new Error(`Issue grouping retrieval failed: ${error.message}`);
         }
 
         const matches = (data || []) as TicketMatch[];
 
         const grouping = await groupIssuesWithLLM(
-        matches.map((ticket) => ({
-            ticket_id: ticket.ticket_id,
-            subject: ticket.subject,
-            description: ticket.description,
-        }))
+            matches.map((ticket) => ({
+                ticket_id: ticket.ticket_id,
+                subject: ticket.subject,
+                description: ticket.description,
+            }))
         );
 
         return JSON.stringify({
-        query,
-        total: matches.length,
-        groups: grouping.groups,
-        sourceTickets: matches.map((ticket) => ({
-            ticket_id: ticket.ticket_id,
-            subject: ticket.subject,
-            similarity: ticket.similarity,
-        })),
+            query,
+            total: matches.length,
+            groups: grouping.groups,
+            sourceTickets: matches.map((ticket) => ({
+                ticket_id: ticket.ticket_id,
+                subject: ticket.subject,
+                similarity: ticket.similarity,
+            })),
         });
     },
     {
@@ -150,11 +155,54 @@ export const groupIssuesTool = tool(
     }
 );
 
+export const detectTrendsTool = tool(
+    async (input) => {
+        const { lastDays } = detectTrendsSchema.parse(input);
+
+        const { data, error } = await supabaseAdmin.rpc("ticket_volume_last_n_days", {
+            p_days: lastDays,
+        });
+
+        if (error) {
+            throw new Error(`Trend detection failed: ${error.message}`);
+        }
+
+        const rows = (data || []) as DailyVolumeRow[];
+
+        const midpoint = Math.floor(rows.length / 2);
+        const previousWindow = rows.slice(0, midpoint);
+        const currentWindow = rows.slice(midpoint);
+
+        const previousTotal = previousWindow.reduce((sum, row) => sum + row.count, 0);
+        const currentTotal = currentWindow.reduce((sum, row) => sum + row.count, 0);
+
+        const change =
+        previousTotal === 0
+            ? null
+            : ((currentTotal - previousTotal) / previousTotal) * 100;
+
+        return JSON.stringify({
+            lastDays,
+            previousTotal,
+            currentTotal,
+            changePercent: change,
+            rows,
+        });
+    },
+    {
+        name: "detect_trends",
+        description:
+        "Compare recent support ticket volume against the previous time window.",
+        schema: detectTrendsSchema,
+    }
+);
+
 export function getSupportWiseTools() {
     return [
         searchTicketsTool,
         getDailyVolumeTool,
         getStatusDistributionTool,
         groupIssuesTool,
+        detectTrendsTool,
     ];
 }
